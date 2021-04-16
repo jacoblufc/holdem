@@ -167,7 +167,6 @@ class TexasHoldemEnv(Env, utils.EzPickle):
     CALL = 1
     RAISE = 2
     FOLD = 3
-
     RAISE_AMT = [0, minraise]
     """
     if len(actions) != len(self._seats):
@@ -185,6 +184,12 @@ class TexasHoldemEnv(Env, utils.EzPickle):
 
     self._last_player = self._current_player
     self._last_actions = actions
+
+
+    if len(self.community) > 1:
+      for player in players:
+        player.handrank = self._evaluator.evaluate(player.hand, self.community)
+        #print(player._seat, ", Score:", player.handrank)
 
     if not self._current_player.playedthisround and len([p for p in players if not p.isallin]) >= 1:
       if self._current_player.isallin:
@@ -234,7 +239,7 @@ class TexasHoldemEnv(Env, utils.EzPickle):
     if self._round == 4 or len(players) == 1:
       terminal = True
       self._resolve_round(players)
-    return self._get_current_step_returns(terminal)
+    return self._get_current_step_returns(terminal,self._round)
 
   def render(self, mode='human', close=False):
     print('total pot: {}'.format(self._totalpot))
@@ -436,7 +441,7 @@ class TexasHoldemEnv(Env, utils.EzPickle):
       'bigblind': self._bigblind,
       'player_id': current_player.player_id,
       'lastraise': self._lastraise,
-      'minraise': max(self._bigblind, self._lastraise + self._tocall),
+      'minraise': 25,
     }
 
   def _pad(self, l, n, v):
@@ -474,8 +479,8 @@ class TexasHoldemEnv(Env, utils.EzPickle):
   def _get_current_reset_returns(self):
     return self._get_current_state()
 
-  def _get_current_step_returns(self, terminal):
+  def _get_current_step_returns(self, terminal,_round):
     obs = self._get_current_state()
     # TODO, make this something else?
     rew = [player.stack for player in self._seats]
-    return obs, rew, terminal, [] # TODO, return some info?
+    return obs, rew, terminal, _round # TODO, return some info?
