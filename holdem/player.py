@@ -66,7 +66,7 @@ class Player(object):
     self.currentbet = 0
     self.lastsidepot = 0
     self.playing_hand = (self.stack != 0)
-
+    self.handrank=-1
   def bet(self, bet_size):
     self.playedthisround = True
     if not bet_size:
