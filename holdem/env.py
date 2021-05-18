@@ -241,7 +241,7 @@ class TexasHoldemEnv(Env, utils.EzPickle):
       self._resolve_round(players)
     return self._get_current_step_returns(terminal,self._round)
 
-  def render(self, mode='human', close=False):
+  def rengder(self, mode='human', close=False):
     print('total pot: {}'.format(self._totalpot))
     if self._last_actions is not None:
       pid = self._last_player.player_id
