@@ -259,6 +259,24 @@ class TexasHoldemEnv(Env, utils.EzPickle):
     # for idx, hand in enumerate(player_hands):
         
     print('{}{}stack: {}'.format(2, hand_to_str(player_hands[2]), self._seats[2].stack))
+    
+    
+  def renderT(self, mode='human', close=False):
+    print('total pot: {}'.format(self._totalpot))
+    if self._last_actions is not None:
+      pid = self._last_player.player_id
+      print('last action by player {}:'.format(pid))
+      print(format_action(self._last_player, self._last_actions[pid]))
+
+    (player_states, community_states) = self._get_current_state()
+    (player_infos, player_hands) = zip(*player_states)
+    (community_infos, community_cards) = community_states
+
+    print('community:')
+    print('-' + hand_to_str(community_cards))
+    print('players:')
+    for idx, hand in enumerate(player_hands):
+      print('{}{}stack: {}'.format(idx, hand_to_str(hand), self._seats[idx].stack))
 
   def _resolve(self, players):
     self._current_player = self._first_to_act(players)
