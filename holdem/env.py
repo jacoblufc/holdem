@@ -255,7 +255,7 @@ class TexasHoldemEnv(Env, utils.EzPickle):
     print('community:')
     print('-' + hand_to_str(community_cards))
     print('players:')
-    print(idx)
+   
     for idx, hand in enumerate(player_hands):
       print('{}{}stack: {}'.format(idx, hand_to_str(hand), self._seats[idx].stack))
 
