@@ -256,8 +256,10 @@ class TexasHoldemEnv(Env, utils.EzPickle):
     print('-' + hand_to_str(community_cards))
     print('players:')
     print(player_hands)
+    print(player_hands[2])
     for idx, hand in enumerate(player_hands):
-      print('{}{}stack: {}'.format(idx, hand_to_str(hand), self._seats[idx].stack))
+         print(hand)
+         print('{}{}stack: {}'.format(idx, hand_to_str(hand), self._seats[idx].stack))
 
   def _resolve(self, players):
     self._current_player = self._first_to_act(players)
